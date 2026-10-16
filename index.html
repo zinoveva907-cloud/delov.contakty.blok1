@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>翻译公会 · ГИЛЬДИЯ ПЕРЕВОДЧИКОВ · Блок 1</title>
+<style>
+:root{--dark:#1a1a2e;--blue:#2c3e8f;--gold:#d4a84b;--bg:#f5f7fa;--card:#fff;--ok:#2ecc71;--bad:#e74c3c;}
+*{box-sizing:border-box;margin:0;padding:0;overflow-wrap:break-word;word-wrap:break-word;}
+body{font-family:'Segoe UI',system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:#222;line-height:1.6;overflow-x:hidden;max-width:100%;}
+.hero{background:linear-gradient(135deg,var(--dark) 0%,var(--blue) 100%);color:#fff;padding:36px 20px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(212,168,75,.1) 0%,transparent 60%);animation:shimmer 8s ease-in-out infinite}
+@keyframes shimmer{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-20px)}}
+.hero h1{font-size:2rem;margin-bottom:8px;position:relative}
+.hero .sub{font-size:1.25rem;color:var(--gold);font-weight:500;position:relative}
+.hero .level{margin-top:10px;font-size:.95rem;opacity:.9;position:relative}
+nav{background:#fff;padding:12px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);position:sticky;top:0;z-index:100}
+nav a{padding:6px 14px;border-radius:20px;text-decoration:none;color:var(--dark);font-size:.88rem;transition:all .2s;border:1px solid #e0e0e0}
+nav a:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+.section{background:var(--card);border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.section h2{color:var(--blue);font-size:1.4rem;margin-bottom:16px;padding-bottom:10px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:10px}
+h3{color:var(--dark);margin:18px 0 10px;font-size:1.1rem;max-width:100%;}
+.audio-panel{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;padding:22px;color:#fff;margin-bottom:20px}
+/* Убрана сетка голосов */
+.lang-btn{padding:14px 22px;border:2px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;border-radius:10px;cursor:pointer;font-size:1rem;transition:all .2s;text-align:center;font-weight:500;min-width:160px}
+.lang-btn:hover{background:rgba(255,255,255,.25);transform:translateY(-1px)}
+.lang-btn.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:600}
+.lang-row{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}
+.ctrl-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:12px 0}
+.ctrl-row label{font-size:.88rem;opacity:.95;display:flex;align-items:center;gap:6px;max-width:100%;}
+.ctrl-row input[type=range]{max-width:110px}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:.95rem;cursor:pointer;transition:all .2s;font-weight:500;max-width:100%;}
+.btn-primary{background:var(--ok);color:#fff}
+.btn-primary:hover{background:#27ae60;transform:translateY(-1px)}
+.btn-red{background:var(--bad);color:#fff}
+.btn-red:hover{background:#c0392b}
+.btn-gold{background:var(--gold);color:#000}
+.btn-gold:hover{background:#c49638}
+.btn-small{padding:6px 12px;font-size:.82rem;border-radius:6px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3);cursor:pointer}
+.btn-small:hover{background:rgba(255,255,255,.35)}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0}
+.mode-btn{padding:12px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;border-radius:10px;cursor:pointer;font-size:.88rem;transition:all .2s;max-width:100%;}
+.mode-btn:hover{background:rgba(255,255,255,.2)}
+.mode-btn.active{background:var(--gold);border-color:var(--gold);color:#000;font-weight:600}
+.progress-bar{height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;margin:10px 0}
+.progress-fill{height:100%;background:var(--gold);transition:width .3s}
+.now-playing{background:rgba(0,0,0,.2);padding:12px;border-radius:8px;margin:10px 0;min-height:48px;display:flex;align-items:center;gap:10px;max-width:100%;}
+.fill-blank{background:#f8f9fa;border-radius:10px;padding:14px;margin:10px 0;border-left:4px solid var(--blue);max-width:100%;}
+.fill-blank .q{margin-bottom:8px;font-size:1rem;max-width:100%;}
+.fill-blank input{padding:8px 12px;border:2px solid #ddd;border-radius:6px;font-size:1rem;max-width:100%;font-family:inherit}
+.fill-blank .fb{margin-top:6px;font-size:.9rem;font-weight:500}
+.fb.ok{color:var(--ok)}
+.fb.bad{color:var(--bad)}
+.test-q{background:#f8f9fa;border-radius:10px;padding:14px;margin:10px 0;border-left:4px solid var(--gold);max-width:100%;}
+.test-q .opts{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.test-q .opt{padding:8px 12px;border:2px solid #ddd;border-radius:6px;cursor:pointer;transition:all .2s;max-width:100%;}
+.test-q .opt:hover{border-color:var(--blue);background:#f0f4ff}
+.test-q .opt.correct{background:#d4edda;border-color:var(--ok);color:#155724}
+.test-q .opt.wrong{background:#f8d7da;border-color:var(--bad);color:#721c24}
+.writing-q{background:#f8f9fa;border-radius:10px;padding:14px;margin:10px 0;border-left:4px solid #667eea;max-width:100%;}
+.writing-q textarea{width:100%;max-width:100%;min-height:60px;padding:10px;border:2px solid #ddd;border-radius:6px;font-size:1rem;font-family:inherit;resize:vertical}
+.ref{display:none;margin-top:8px;padding:10px;background:#e8f4fd;border-radius:6px;border-left:3px solid var(--blue);max-width:100%;}
+.ref.show{display:block}
+.wechat{max-width:420px;margin:0 auto;background:#ededed;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.wechat-header{background:#ededed;padding:12px;text-align:center;font-weight:600;border-bottom:1px solid #d0d0d0;font-size:.95rem}
+.chat-body{padding:16px;background:#ededed;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:75%;padding:10px 14px;border-radius:8px;position:relative;font-size:.95rem;line-height:1.5;overflow-wrap:break-word;word-break:break-word;}
+.msg.me{align-self:flex-end;background:#95ec69}
+.msg.them{align-self:flex-start;background:#fff}
+.msg .snd{font-size:.7rem;color:#888;margin-bottom:4px}
+.wechat-translate{display:none;margin-top:16px;padding:14px;background:#f0f8ff;border-radius:8px;border-left:4px solid var(--blue);max-width:100%;}
+.wechat-translate.show{display:block}
+.interval-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.interval-grid{grid-template-columns:1fr}}
+.interval-col h4{margin-bottom:10px;color:var(--blue)}
+.phrase-card{background:#f8f9fa;padding:12px;border-radius:8px;margin:8px 0;display:flex;align-items:center;gap:8px;flex-wrap:wrap;max-width:100%;}
+.phrase-card .text{flex:1;min-width:180px;max-width:100%;}
+.phrase-card .ans{display:none;color:var(--ok);font-weight:500;margin-top:4px;font-size:.95rem;width:100%}
+.phrase-card .ans.show{display:block}
+.checklist{list-style:none}
+.checklist li{padding:10px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px}
+.loading{text-align:center;padding:20px;color:#fff;font-style:italic}
+.btn-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<h1>翻译公会 · ГИЛЬДИЯ ПЕРЕВОДЧИКОВ</h1>
+<div class="sub">Блок 1 · Установление деловых контактов · Переговоры на выставке</div>
+<div class="level">Деловой и технический китайский · Уровень HSK 4+ · Для работы с китайскими поставщиками</div>
+</div>
+
+<nav>
+<a href="#audio">🔊 Аудиотренажёр</a>
+<a href="#fill">① Вставьте пропущенное</a>
+<a href="#test">② 选择正确答案</a>
+<a href="#writing">③ Письменный перевод</a>
+<a href="#attention">④ Внимательность</a>
+<a href="#wechat">⑤ WeChat-переписка</a>
+<a href="#interval">🔁 Интервальный</a>
+<a href="#check">✅ Чек-лист</a>
+</nav>
+
+<div class="container">
+
+<div class="section" id="audio">
+<h2>🔊 Аудиотренажёр</h2>
+
+<div class="audio-panel">
+  <div id="audioStatus" class="loading">⏳ Загружаем голоса...</div>
+  <div id="audioReady" style="display:none">
+    <div class="lang-row">
+      <button class="lang-btn active" id="btnZh">Китайский</button>
+      <button class="lang-btn" id="btnRu">Русский</button>
+    </div>
+    <div class="ctrl-row">
+      <label>Скорость: <span id="rateVal">1.0</span>× <input type="range" id="rate" min="0.55" max="1.6" step="0.05" value="1.0"></label>
+      <label>Пауза: <span id="pauseVal">2.5</span>с <input type="range" id="pause" min="0.8" max="6" step="0.2" value="2.5"></label>
+    </div>
+    <h3 style="color:#fff;margin:14px 0 6px">Режим</h3>
+    <div class="mode-grid" id="modeBtns">
+      <button class="mode-btn active" data-mode="zh">Только китайский</button>
+      <button class="mode-btn" data-mode="ruzh">Русский → китайский</button>
+      <button class="mode-btn" data-mode="zhru">Китайский → русский</button>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="now-playing" id="nowPlay">▶ Выберите режим и нажмите «Старт»</div>
+    <div class="btn-row" style="margin-top:14px">
+      <button class="btn btn-primary" id="btnStart">▶ Старт (все уроки)</button>
+      <button class="btn btn-red" id="btnStop">■ Стоп</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section" id="fill"><h2>① Вставьте пропущенное слово</h2><div id="fillExercises"></div></div>
+<div class="section" id="test"><h2>② Выберите правильный вариант · 选择正确答案</h2><div id="testQuestions"></div></div>
+<div class="section" id="writing"><h2>③ Письменный перевод</h2><div id="writingTasks"></div></div>
+<div class="section" id="attention"><h2>④ Задание на внимательность</h2><div id="attentionTasks"></div></div>
+
+<div class="section" id="wechat">
+<h2>⑤ Живая переписка · WeChat</h2>
+<p style="margin-bottom:14px;color:#555">Перед вами — реальная переписка с поставщиком. <strong>Нажмите «Показать перевод»</strong>, чтобы увидеть перевод всех реплик.</p>
+<div class="wechat">
+  <div class="wechat-header">💬 WeChat · Чат с Mr. Wáng</div>
+  <div class="chat-body" id="wechatMsgs"></div>
+</div>
+<div style="text-align:center;margin:16px 0"><button class="btn btn-gold" id="btnWechatTrans">Показать перевод</button></div>
+<div class="wechat-translate" id="wechatTr"></div>
+</div>
+
+<div class="section" id="interval">
+<h2>🔁 Интервальный перевод</h2>
+<p style="margin-bottom:14px;color:#555">Закройте ответ и переводите вслух. Нажмите «показать» для проверки.</p>
+<div class="interval-grid">
+  <div class="interval-col"><h4>Русский → 中文</h4><div id="intervalRuZh"></div></div>
+  <div class="interval-col"><h4>中文 → Русский</h4><div id="intervalZhRu"></div></div>
+</div>
+</div>
+
+<div class="section" id="check"><h2>✅ Чек-лист завершения</h2><ul class="checklist" id="checklist"></ul></div>
+
+</div>
+
+<script>
+const LESSONS = [
+  {title:'Урок 1 · Первая встреча', phrases:[
+    {zh:'中国进出口总公司', ru:'Китайская генеральная импортно-экспортная компания', lesson:1, n:1},
+    {zh:'公司派我来', ru:'компания направила меня', lesson:1, n:2},
+    {zh:'接待贵团', ru:'принимать вашу делегацию', lesson:1, n:3},
+    {zh:'一路顺利吗', ru:'как добрались?', lesson:1, n:4},
+    {zh:'一路顺利', ru:'благополучно добрались', lesson:1, n:5},
+    {zh:'一路顺风', ru:'счастливого пути', lesson:1, n:6},
+    {zh:'多多关照', ru:'прошу оказывать содействие', lesson:1, n:7},
+    {zh:'认识您非常高兴', ru:'очень приятно с вами познакомиться', lesson:1, n:8},
+    {zh:'合作愉快', ru:'приятного сотрудничества', lesson:1, n:9},
+    {zh:'请允许我介绍', ru:'позвольте мне представить', lesson:1, n:10},
+    {zh:'代表团成员', ru:'члены делегации', lesson:1, n:11},
+    {zh:'保持密切联系', ru:'поддерживать тесную связь', lesson:1, n:12},
+  ]},
+  {title:'Урок 2 · Работа на стенде', phrases:[
+    {zh:'欢迎来到我们的展位', ru:'добро пожаловать на наш стенд', lesson:2, n:1},
+    {zh:'您在找什么产品', ru:'какой продукт вы ищете?', lesson:2, n:2},
+    {zh:'做家居用品的', ru:'занимаемся товарами для дома', lesson:2, n:3},
+    {zh:'想看看保温杯', ru:'хотим посмотреть термокружки', lesson:2, n:4},
+    {zh:'明星产品', ru:'хит-продаж', lesson:2, n:5},
+    {zh:'真空双层', ru:'двойной вакуум', lesson:2, n:6},
+    {zh:'保温十二小时', ru:'держит тепло 12 часов', lesson:2, n:7},
+    {zh:'容量有几种', ru:'какие есть объёмы?', lesson:2, n:8},
+    {zh:'印我们的logo', ru:'нанести наш логотип', lesson:2, n:9},
+    {zh:'激光雕刻', ru:'лазерная гравировка', lesson:2, n:10},
+    {zh:'起订量五百件', ru:'минимальный заказ 500 штук', lesson:2, n:11},
+    {zh:'这是报价单', ru:'вот прайс-лист', lesson:2, n:12},
+    {zh:'量大我们可以再谈', ru:'при большом объёме обсудим цену', lesson:2, n:13},
+    {zh:'方便的话加个微信', ru:'если удобно, добавимся в WeChat', lesson:2, n:14},
+    {zh:'把样品照片发您', ru:'отправлю вам фото образцов', lesson:2, n:15},
+  ]},
+  {title:'Урок 3 · Установление контактов', phrases:[
+    {zh:'建立商务联系', ru:'устанавливать деловые связи', lesson:3, n:1},
+    {zh:'通过一个朋友介绍', ru:'через знакомого', lesson:3, n:2},
+    {zh:'访美的中国商务部负责人', ru:'руководитель Минторга Китая, посещавший США', lesson:3, n:3},
+    {zh:'附上商品目录', ru:'приложить каталог товаров', lesson:3, n:4},
+    {zh:'寄给天津市商务委员会', ru:'отправить в Тяньцзиньское бюро коммерции', lesson:3, n:5},
+    {zh:'发来邀请信', ru:'прислать приглашение', lesson:3, n:6},
+    {zh:'投石问路', ru:'прощупывать почву', lesson:3, n:7},
+    {zh:'更简便的方法', ru:'более простой способ', lesson:3, n:8},
+    {zh:'中国驻外商务机构', ru:'китайское торгпредство за рубежом', lesson:3, n:9},
+    {zh:'各专业公司的介绍', ru:'справочник по профильным компаниям', lesson:3, n:10},
+    {zh:'经营范围', ru:'сфера деятельности', lesson:3, n:11},
+    {zh:'产品目录', ru:'каталог продукции', lesson:3, n:12},
+  ]}
+];
+
+const ALL_PHRASES = LESSONS.flatMap(l => l.phrases);
+
+// WeChat переписка
+const WECHAT_MSGS = [
+  {me:false, sender:'Mr. Wáng', zh:'您好，我们在展会见过面，我们对贵司的保温杯很感兴趣。', ru:'Здравствуйте, мы виделись на выставке, нас очень заинтересовали ваши термокружки.'},
+  {me:true,  sender:'Вы', zh:'您好，记得您！我们可以做定制款，起订量五百件。', ru:'Здравствуйте, помним вас! Мы делаем кастомные партии, минимальный заказ 500 штук.'},
+  {me:false, sender:'Mr. Wáng', zh:'那我们想先要两个样品看看质量，可以吗？', ru:'Тогда мы хотим сначала два образца, чтобы проверить качество, можно?'},
+  {me:true,  sender:'Вы', zh:'没问题，样品免费，运费到付，可以吗？', ru:'Без проблем, образцы бесплатные, доставка за счёт получателя, устроит?'},
+  {me:false, sender:'Mr. Wáng', zh:'可以。麻烦您在样品里附上报价单和规格书。', ru:'Можно. Пожалуйста, приложите к образцам прайс-лист и спецификацию.'},
+  {me:true,  sender:'Вы', zh:'好的，明天我安排一下，给您寄过去。', ru:'Хорошо, завтра всё организую и отправлю вам.'},
+];
+
+// Упражнения: пропуски
+const FILL_EXERCISES = [
+  {zh:'欢迎来到我们的_______。', answer:'展位', ru:'Добро пожаловать на наш стенд.'},
+  {zh:'这款是我们的_______产品，真空双层。', answer:'明星', ru:'Это наш хит-продаж, двойной вакуум.'},
+  {zh:'起_______五百件。', answer:'订量', ru:'Минимальный заказ 500 штук.'},
+  {zh:'logo可以_______雕刻。', answer:'激光', ru:'Логотип наносится лазерной гравировкой.'},
+  {zh:'保温_______小时。', answer:'十二', ru:'Держит тепло двенадцать часов.'},
+  {zh:'方便的话加个_______。', answer:'微信', ru:'Если удобно, добавимся в WeChat.'},
+  {zh:'请_______我介绍代表团成员。', answer:'允许', ru:'Позвольте представить членов делегации.'},
+  {zh:'希望我们保持_______联系。', answer:'密切', ru:'Надеюсь, мы будем поддерживать тесную связь.'},
+];
+
+// Тест
+const TEST_QS = [
+  {q:'«Минимальный заказ 500 штук» — это:', opts:['起订量五百件','经营范围','报价单'], answer:'起订量五百件'},
+  {q:'«Нанести логотип лазерной гравировкой» — это:', opts:['激光雕刻','真空双层','明星产品'], answer:'激光雕刻'},
+  {q:'«Держит тепло 12 часов» — это:', opts:['保温十二小时','一路顺利','合作愉快'], answer:'保温十二小时'},
+  {q:'«Прощупывать почву» — идиома:', opts:['投石问路','多多关照','一路顺风'], answer:'投石问路'},
+  {q:'«Сфера деятельности компании» — это:', opts:['经营范围','商品目录','邀请信'], answer:'经营范围'},
+  {q:'«Добро пожаловать на наш стенд» — это:', opts:['欢迎来到我们的展位','您在找什么产品','这是报价单'], answer:'欢迎来到我们的展位'},
+];
+
+// Письменный перевод
+const WRITING_QS = [
+  {ru:'Компания направила меня принимать вашу делегацию.', zh:'公司派我来接待贵团。'},
+  {ru:'Позвольте представить членов делегации.', zh:'请允许我介绍代表团成员。'},
+  {ru:'Это наш хит-продаж — двойной вакуум, держит тепло 12 часов.', zh:'这是我们的明星产品，真空双层，保温十二小时。'},
+  {ru:'Если удобно, добавимся в WeChat, я отправлю вам фото образцов.', zh:'方便的话加个微信，我把样品照片发您。'},
+  {zh:'建立商务联系更简便的方法是什么？', ru:'Какой более простой способ установить деловые связи?'},
+  {zh:'请附上商品目录和产品目录，说明贵公司的经营范围。', ru:'Пожалуйста, приложите каталог товаров и каталог продукции, опишите сферу деятельности вашей компании.'},
+];
+
+// Внимательность
+const ATTENTION_QS = [
+  {q:'Сколько часов держит тепло термокружка из диалога на стенде?', answer:'12', hint:'двенадцать'},
+  {q:'Сколько вариантов объёма упоминает менеджер Ван на стенде?', answer:'2', hint:'два, две штуки'},
+  {q:'Какой минимальный заказ (MOQ) на кастомную партию термокружек?', answer:'500', hint:'пятьсот'},
+  {q:'В какой город Петров отправил письмо с каталогом товаров?', answer:'Тяньцзинь', hint:'Тяньцзинь'},
+  {q:'Кого Ли Нин назвал секретарём российской делегации?', answer:'Екатерина', hint:'Екатерина'},
+  {q:'Кто поддерживает с китайской стороной тесную связь после встречи?', answer:'Екатерина', hint:'Екатерина (секретарь)'},
+];
+
+// Чек-лист
+const CHECKLIST = [
+  'Прослушаны все фразы всех трёх уроков в режиме Shadowing',
+  'Отработан интервальный перевод RU→ZH (все фразы)',
+  'Отработан интервальный перевод ZH→RU (все фразы)',
+  'Пройдены упражнения на пропуски (без ошибок)',
+  'Пройден тест на выбор варианта (100% правильных)',
+  'Выполнены задания письменного перевода в обе стороны',
+  'Прочитана WeChat-переписка и проверен перевод всех реплик',
+];
+
+// ===== АУДИО ПОДДЕРЖКА ВАШИХ ФАЙЛОВ =====
+const audioFiles = {};
+function audioKey(lesson, n, lang){return `lesson${String(lesson).padStart(2,'0')}_phrase${String(n).padStart(3,'0')}_${lang}`;}
+ALL_PHRASES.forEach(p => {
+  audioFiles[`${audioKey(p.lesson,p.n,'zh')}`] = `audio/${audioKey(p.lesson,p.n,'zh')}.mp3`;
+  audioFiles[`${audioKey(p.lesson,p.n,'ru')}`] = `audio/${audioKey(p.lesson,p.n,'ru')}.mp3`;
+});
+const cache = {};
+function playAudio(src, lang, rate, onend){
+  // Пробуем проиграть локальный MP3 — если файла нет, откат на TTS
+  const a = new Audio(src);
+  a.playbackRate = rate;
+  let fallbackFired = false;
+  const doFallback = () => {
+    if(fallbackFired) return;
+    fallbackFired = true;
+    const key = src.split('/').pop().replace('.mp3','');
+    const parts = key.split('_');
+    if(parts.length>=3){
+      const ln = parseInt(parts[0].replace('lesson',''));
+      const nn = parseInt(parts[1].replace('phrase',''));
+      const lg = parts[2];
+      const phr = ALL_PHRASES.find(p => p.lesson===ln && p.n===nn);
+      speakFallback(lg, phr?.[lg], rate, onend);
+    } else if(onend) onend();
+  };
+  a.addEventListener('error', doFallback);
+  a.addEventListener('ended', () => { if(!fallbackFired && onend) onend(); });
+  // Таймаут на случай если файл не грузится долго (оффлайн/не найден)
+  const timeout = setTimeout(doFallback, 800);
+  a.play().then(()=>{clearTimeout(timeout);}).catch(doFallback);
+  return a;
+}
+
+function getAudioSrc(lesson, n, lang){
+  const key = audioKey(lesson,n,lang);
+  return `audio/${key}.mp3`;
+}
+
+// ===== TTS FALLBACK =====
+let zhVoice, ruVoice, voices = [];
+let currentLang = 'zh'; // по умолчанию китайский активен
+function pickVoice(list, prefs, lang){
+  for(const p of prefs){
+    const v = list.find(v => v.name.toLowerCase().includes(p.toLowerCase()));
+    if(v) return v;
+  }
+  return list.find(v => v.lang.startsWith(lang));
+}
+function loadVoices(){
+  voices = speechSynthesis.getVoices();
+  const zhList = voices.filter(v=>v.lang.startsWith('zh'));
+  const ruList = voices.filter(v=>v.lang.startsWith('ru'));
+  zhVoice = pickVoice(zhList, ['Xiaoxiao','Yaoyao','Huihui','Chinese'], 'zh');
+  ruVoice = pickVoice(ruList, ['Svetlana','Irina','Dariya','Russian'], 'ru');
+  // простые переключатели языков без списка названий
+  const btnZh = document.getElementById('btnZh');
+  const btnRu = document.getElementById('btnRu');
+  btnZh.onclick = () => {
+    currentLang = 'zh';
+    btnZh.classList.add('active');
+    btnRu.classList.remove('active');
+  };
+  btnRu.onclick = () => {
+    currentLang = 'ru';
+    btnRu.classList.add('active');
+    btnZh.classList.remove('active');
+  };
+  document.getElementById('audioStatus').style.display='none';
+  document.getElementById('audioReady').style.display='block';
+}
+function speakFallback(lang, text, rate, onend){
+  if(!text) {if(onend)onend(); return;}
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang==='zh'?'zh-CN':'ru-RU';
+  u.voice = lang==='zh'?zhVoice:ruVoice;
+  u.rate = rate;
+  u.onend = onend;
+  try{speechSynthesis.speak(u);}catch(e){if(onend)onend();}
+}
+
+function stopAll(){
+  speechSynthesis.cancel();
+  playing = false;
+  document.getElementById('prog').style.width='0%';
+  document.getElementById('nowPlay').textContent='■ Остановлено';
+}
+let playing = false;
+let currentPlayer = null;
+
+// ===== РЕЖИМ АУДИО =====
+let mode = 'zh';
+document.querySelectorAll('.mode-btn').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    mode = b.dataset.mode;
+  };
+});
+
+document.getElementById('rate').oninput = e => document.getElementById('rateVal').textContent = e.target.value;
+document.getElementById('pause').oninput = e => document.getElementById('pauseVal').textContent = e.target.value;
+
+document.getElementById('btnStart').onclick=()=>{
+  stopAll(); playing = true;
+  const rate = parseFloat(document.getElementById('rate').value);
+  const pauseSec = parseFloat(document.getElementById('pause').value);
+  const q = [...ALL_PHRASES];
+  let i = 0;
+  const total = q.length;
+  function next(){
+    if(!playing || i>=total){stopAll(); return;}
+    const p = q[i];
+    document.getElementById('prog').style.width = `${(i/total)*100}%`;
+    document.getElementById('nowPlay').innerHTML = `<span>▶</span><span>${p.zh}<br><small style="opacity:.7">${p.ru}</small></span>`;
+    const onzh = ()=>setTimeout(()=>{
+      if(!playing) return;
+      if(mode==='zh'){ i++; setTimeout(next, pauseSec*1000); return;}
+      if(mode==='ruzh'){
+        speakFallback('ru', p.ru, rate, ()=>{setTimeout(()=>{i++; setTimeout(next,pauseSec*1000);},pauseSec*1000);});
+      } else { // zhru
+        speakFallback('ru', p.ru, rate, ()=>{i++; setTimeout(next,pauseSec*1000);});
+      }
+    }, pauseSec*1000);
+    playAudio(getAudioSrc(p.lesson,p.n,'zh'), 'zh', rate, onzh);
+  }
+  if(mode==='ruzh'){
+    // первый русский, потом китайский
+    function firstRu(){
+      if(!playing || i>=total){stopAll(); return;}
+      const p = q[i];
+      document.getElementById('prog').style.width = `${(i/total)*100}%`;
+      document.getElementById('nowPlay').innerHTML = `<span>▶</span><span>${p.ru}<br><small style="opacity:.7">${p.zh}</small></span>`;
+      playAudio(getAudioSrc(p.lesson,p.n,'ru'), 'ru', rate, ()=>{
+        setTimeout(()=>{
+          if(!playing)return;
+          playAudio(getAudioSrc(p.lesson,p.n,'zh'), 'zh', rate, ()=>{
+            setTimeout(()=>{i++; firstRu();}, pauseSec*1000);
+          });
+        }, pauseSec*1000);
+      });
+    }
+    firstRu();
+  } else {
+    next();
+  }
+};
+document.getElementById('btnStop').onclick = stopAll;
+
+// ===== УПРАЖНЕНИЯ =====
+function renderFill(){
+  const w = document.getElementById('fillExercises'); w.innerHTML='';
+  FILL_EXERCISES.forEach((ex,i)=>{
+    const div=document.createElement('div');
+    div.className='fill-blank';
+    div.innerHTML=`<div class="q">${ex.zh}</div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input type="text" id="fi${i}" placeholder="введите иероглифы"><button class="btn btn-gold" onclick="chkFill(${i})">Проверить</button><span id="fr${i}" class="fb"></span></div>
+      <div id="fy${i}" style="display:none;color:#555;margin-top:6px">${ex.ru}</div>`;
+    w.appendChild(div);
+  });
+}
+function chkFill(i){
+  const val = document.getElementById('fi'+i).value.trim();
+  const ans = FILL_EXERCISES[i].answer;
+  // Пустой ответ сразу неверный
+  if(!val){
+    document.getElementById('fr'+i).textContent = '❌ Введите ответ';
+    document.getElementById('fr'+i).className = 'fb bad';
+    document.getElementById('fi'+i).style.borderColor = '#e74c3c';
+    document.getElementById('fy'+i).style.display='none';
+    return;
+  }
+  // Строгая проверка: точное совпадение ответа или одного из допустимых синонимов
+  const answers = Array.isArray(ans) ? ans : [ans];
+  const ok = answers.some(a => val === a.trim());
+  document.getElementById('fr'+i).textContent = ok?'✅ Правильно!':'❌ Неверно, правильный ответ: '+(Array.isArray(ans)?ans.join(' / '):ans);
+  document.getElementById('fr'+i).className = 'fb '+(ok?'ok':'bad');
+  document.getElementById('fi'+i).style.borderColor = ok ? '#2ecc71' : '#e74c3c';
+  document.getElementById('fy'+i).style.display = ok?'block':'none';
+}
+
+function renderTest(){
+  const w = document.getElementById('testQuestions'); w.innerHTML='';
+  TEST_QS.forEach((q,i)=>{
+    const div=document.createElement('div'); div.className='test-q';
+    let opts = q.opts.map(o=>`<div class="opt" data-i="${i}" data-v="${o}">${o}</div>`).join('');
+    div.innerHTML=`<div style="font-weight:500;margin-bottom:8px">${q.q}</div><div class="opts">${opts}</div><div id="cr${i}" style="margin-top:8px"></div>`;
+    w.appendChild(div);
+  });
+  w.querySelectorAll('.opt').forEach(o=>{
+    o.onclick=()=>{
+      const i=+o.dataset.i, v=o.dataset.v;
+      w.querySelectorAll(`.opt[data-i="${i}"]`).forEach(x=>{x.classList.remove('correct','wrong');});
+      if(v===TEST_QS[i].answer){o.classList.add('correct'); document.getElementById('cr'+i).innerHTML='<span style="color:var(--ok)">✅ Правильно!</span>';}
+      else{
+        o.classList.add('wrong');
+        w.querySelector(`.opt[data-i="${i}"][data-v="${TEST_QS[i].answer}"]`).classList.add('correct');
+        document.getElementById('cr'+i).innerHTML='<span style="color:var(--bad)">❌ Правильный ответ подсвечен зелёным</span>';
+      }
+    };
+  });
+}
+
+function renderWriting(){
+  const w=document.getElementById('writingTasks'); w.innerHTML='';
+  WRITING_QS.forEach((q,i)=>{
+    const div=document.createElement('div'); div.className='writing-q';
+    const from = q.ru?'<div style="font-size:.8rem;color:#764ba2;margin-bottom:4px">Русский → 中文</div><div style="font-size:1rem">'+q.ru+'</div>':'<div style="font-size:.8rem;color:#764ba2;margin-bottom:4px">中文 → Русский</div><div style="font-size:1.1rem">'+q.zh+'</div>';
+    div.innerHTML=`<div>${from}</div><textarea placeholder="ваш перевод..."></textarea>
+      <button class="btn btn-gold" onclick="chkWriting(this)">Показать эталон и проверить</button>
+      <div class="ref">${q.zh?'Китайский эталон: <b>'+q.zh+'</b><br>':''}${q.ru?'Русский эталон: <b>'+q.ru+'</b>':''}</div>`;
+    w.appendChild(div);
+  });
+}
+function chkWriting(btn){
+  btn.nextElementSibling.classList.add('show');
+}
+
+function renderAttention(){
+  const w=document.getElementById('attentionTasks'); w.innerHTML='';
+  ATTENTION_QS.forEach((q,i)=>{
+    const div=document.createElement('div'); div.className='writing-q';
+    div.innerHTML=`<div style="font-size:1rem">${q.q}</div>
+      <textarea placeholder="ваш ответ..."></textarea>
+      <button class="btn btn-gold" onclick="chkAtt(this, ${i})">Проверить</button>
+      <div class="ref" id="ar${i}"></div>`;
+    w.appendChild(div);
+  });
+}
+function chkAtt(btn, i){
+  const val = btn.previousElementSibling.value.trim().toLowerCase();
+  const ok = val.includes(ATTENTION_QS[i].answer.toLowerCase()) || ATTENTION_QS[i].hint.toLowerCase().split(/[, ]/).some(h => h.length>2 && val.includes(h));
+  document.getElementById('ar'+i).classList.add('show');
+  document.getElementById('ar'+i).innerHTML = ok?'<span style="color:var(--ok)">✅ Правильно! '+ATTENTION_QS[i].hint+'</span>':'<span style="color:var(--bad)">❌ Правильный ответ: '+ATTENTION_QS[i].answer+' ('+ATTENTION_QS[i].hint+')</span>';
+}
+
+// ===== WECHAT =====
+function renderWechat(){
+  const w=document.getElementById('wechatMsgs'); w.innerHTML='';
+  WECHAT_MSGS.forEach(m=>{
+    const div=document.createElement('div');
+    div.className='msg '+(m.me?'me':'them');
+    div.innerHTML=`<div class="snd">${m.sender}</div>${m.zh}`;
+    w.appendChild(div);
+  });
+  const tr=document.getElementById('wechatTr');
+  tr.innerHTML='<ol style="padding-left:20px">'+WECHAT_MSGS.map(m=>`<li><b>${m.sender}:</b> ${m.ru}</li>`).join('')+'</ol>';
+}
+document.getElementById('btnWechatTrans').onclick=()=>{
+  const tr=document.getElementById('wechatTr');
+  const btn=document.getElementById('btnWechatTrans');
+  tr.classList.toggle('show');
+  btn.textContent = tr.classList.contains('show')?'Скрыть перевод':'Показать перевод';
+};
+
+// ===== ИНТЕРВАЛЬНЫЙ ПЕРЕВОД =====
+function renderInterval(){
+  const rz=document.getElementById('intervalRuZh');
+  const zr=document.getElementById('intervalZhRu');
+  rz.innerHTML=''; zr.innerHTML='';
+  LESSONS.forEach(lesson=>{
+    const h1=document.createElement('h3'); h1.textContent=lesson.title; h1.style.color='var(--blue);font-size:1rem;margin:12px 0 6px';
+    rz.appendChild(h1);
+    const h2=h1.cloneNode(true); zr.appendChild(h2);
+    lesson.phrases.forEach(p=>{
+      const c1=document.createElement('div'); c1.className='phrase-card';
+      c1.innerHTML=`<div class="text">${p.ru}</div>
+        <button class="btn btn-small" data-l="${p.lesson}" data-n="${p.n}" data-lg="ru">🔊</button>
+        <button class="btn btn-gold" style="padding:4px 10px;font-size:.8rem" onclick="this.nextElementSibling.classList.toggle('show')">показать</button>
+        <div class="ans">${p.zh}</div>`;
+      rz.appendChild(c1);
+      const c2=document.createElement('div'); c2.className='phrase-card';
+      c2.innerHTML=`<div class="text">${p.zh}</div>
+        <button class="btn btn-small" data-l="${p.lesson}" data-n="${p.n}" data-lg="zh">🔊</button>
+        <button class="btn btn-gold" style="padding:4px 10px;font-size:.8rem" onclick="this.nextElementSibling.classList.toggle('show')">показать</button>
+        <div class="ans">${p.ru}</div>`;
+      zr.appendChild(c2);
+    });
+  });
+  document.querySelectorAll('#interval button[data-l]').forEach(b=>{
+    b.onclick=()=>{
+      const l=+b.dataset.l, n=+b.dataset.n, lg=b.dataset.lg;
+      const rate=parseFloat(document.getElementById('rate').value);
+      playAudio(getAudioSrc(l,n,lg), lg, rate);
+    };
+  });
+}
+
+// ===== ЧЕК-ЛИСТ =====
+function renderChecklist(){
+  const w=document.getElementById('checklist');
+  const saved = JSON.parse(localStorage.getItem('b1check')||'{}');
+  CHECKLIST.forEach((c,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<input type="checkbox" ${saved[i]?'checked':''}><span>${c}</span>`;
+    li.querySelector('input').onchange=e=>{saved[i]=e.target.checked; localStorage.setItem('b1check', JSON.stringify(saved));};
+    w.appendChild(li);
+  });
+}
+
+// ИНИЦИАЛИЗАЦИЯ
+loadVoices();
+if(speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
+renderFill();
+renderTest();
+renderWriting();
+renderAttention();
+renderWechat();
+renderInterval();
+renderChecklist();
+</script>
+</body>
+</html>
